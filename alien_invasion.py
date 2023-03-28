@@ -1,9 +1,11 @@
 import sys
 import pygame
 from ship import Ship
+from bullet import Bullet
 
 
 class AlienInvasion:
+
     HEIGHT, WIDTH = 800, 600
     TITLE = "Alien Invasion"
 
@@ -16,12 +18,18 @@ class AlienInvasion:
         self.FPS = 60
 
         self.ship = Ship(self)
+        self.bullets = pygame.sprite.Group()
+
 
     def draw_window(self):
         self.screen.fill(self.bg_color)
         self.ship.blitme()
         self.ship.update()
+        for bullet in self.bullets.sprites():
+            bullet.draw_bullet()
+            bullet.update()
         pygame.display.update()
+
 
     # can move if else statements to separate class and using the strategy design pattern we can dynamically switch
     # between each movement
@@ -34,11 +42,19 @@ class AlienInvasion:
                     self.ship.moving_right = True
                 elif event.key == pygame.K_LEFT:
                     self.ship.moving_left = True
+                elif event.key == pygame.K_UP:
+                    self._fire_bullet()
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_RIGHT:
                     self.ship.moving_right = False
                 elif event.key == pygame.K_LEFT:
                     self.ship.moving_left = False
+
+
+    def _fire_bullet(self):
+        new_bullet = Bullet(self)
+        self.bullets.add(new_bullet)
+        
 
     def run_game(self):
         is_running = True
