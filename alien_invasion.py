@@ -26,8 +26,11 @@ class AlienInvasion:
         self.ship.blitme()
         self.ship.update()
         for bullet in self.bullets.sprites():
-            bullet.draw_bullet()
-            bullet.update()
+            if bullet.rect.bottom > 0:
+                bullet.draw_bullet()
+                bullet.update()
+            else:
+                self.bullets.remove(bullet)
         pygame.display.update()
 
 
@@ -52,9 +55,10 @@ class AlienInvasion:
 
 
     def _fire_bullet(self):
-        new_bullet = Bullet(self)
-        self.bullets.add(new_bullet)
-        
+        if len(self.bullets) < self.ship.bullets_allowed:
+            new_bullet = Bullet(self)
+            self.bullets.add(new_bullet)
+
 
     def run_game(self):
         is_running = True

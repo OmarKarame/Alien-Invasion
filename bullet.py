@@ -8,9 +8,9 @@ class Bullet(Sprite):
         self.screen = ai_game.screen
 
         # Bullet settings
-        self.bulllet_speed = 3.0
+        self.bullet_speed = 6.0
         self.bullet_height = 12
-        self.bullet_width = 3
+        self.bullet_width = 6
         self.bullet_color = (250, 10, 10)
 
         self.rect = pygame.Rect(0, 0, self.bullet_width, self.bullet_height)
@@ -20,9 +20,9 @@ class Bullet(Sprite):
 
 
     def update(self):
-        self.y -= self.bulllet_speed
+        self.y -= self.bullet_speed
         self.rect.y = self.y
-        
+
 
     def draw_bullet(self):
         pygame.draw.rect(self.screen, self.bullet_color, self.rect)

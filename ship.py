@@ -7,6 +7,7 @@ class Ship:
     RESIZED_IMAGE = pygame.transform.scale(IMAGE, (40, 80))
 
     SPEED = 8
+    bullets_allowed = 3
 
     moving_right = False
     moving_left = False
@@ -24,7 +25,7 @@ class Ship:
 
     def blitme(self):
         self.screen.blit(self.image, self.rect)
-        
+
 
     def update(self):
         if self.moving_right and self.rect.x + self.RESIZED_IMAGE.get_width() < self.game_width:
