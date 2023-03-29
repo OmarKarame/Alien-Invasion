@@ -9,8 +9,8 @@ class Bullet(Sprite):
 
         # Bullet settings
         self.bullet_speed = 6.0
-        self.bullet_height = 12
-        self.bullet_width = 6
+        self.bullet_height = 20
+        self.bullet_width = 3
         self.bullet_color = (250, 10, 10)
 
         self.rect = pygame.Rect(0, 0, self.bullet_width, self.bullet_height)

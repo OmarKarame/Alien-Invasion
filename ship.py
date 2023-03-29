@@ -7,7 +7,7 @@ class Ship:
     RESIZED_IMAGE = pygame.transform.scale(IMAGE, (40, 80))
 
     SPEED = 8
-    bullets_allowed = 3
+    bullets_allowed = 6
 
     moving_right = False
     moving_left = False

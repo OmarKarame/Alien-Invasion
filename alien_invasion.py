@@ -1,12 +1,15 @@
 import sys
 import pygame
+import os
 from ship import Ship
 from bullet import Bullet
 
 
 class AlienInvasion:
 
-    HEIGHT, WIDTH = 800, 600
+    HEIGHT, WIDTH = 800, 500
+    SPACE_BG = pygame.image.load(os.path.join('Assets', 'space_bg.jpg'))
+    RESIZED_BG = pygame.transform.scale(SPACE_BG, (WIDTH, HEIGHT))
     TITLE = "Alien Invasion"
 
     def __init__(self):
@@ -23,6 +26,7 @@ class AlienInvasion:
 
     def draw_window(self):
         self.screen.fill(self.bg_color)
+        self.blitme()
         self.ship.blitme()
         self.ship.update()
         for bullet in self.bullets.sprites():
@@ -72,6 +76,8 @@ class AlienInvasion:
 
         pygame.quit()
 
+    def blitme(self):
+        self.screen.blit(self.RESIZED_BG, self.RESIZED_BG.get_rect())
 
 if __name__ == '__main__':
     ai = AlienInvasion()
