@@ -8,7 +8,7 @@ class Alien(Sprite):
     # Add new alien spaceship image to the assets folder 
     # The alien spaceship is not being loaded in the alien invasion file
     IMAGE = pygame.image.load(os.path.join('Assets', 'UFO.png'))
-    RESIZED_IMAGE = pygame.transform.scale(IMAGE, (80, 60))
+    RESIZED_IMAGE = pygame.transform.scale(IMAGE, (44, 30))
     
     def __init__(self, ai_game):
         super().__init__()
