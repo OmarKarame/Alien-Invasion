@@ -12,6 +12,8 @@ class Ship:
     moving_right = False
     moving_left = False
 
+    ship_limit = 3
+
     def __init__(self, ai_game):
         self.screen = ai_game.screen
         self.screen_rect = ai_game.screen.get_rect()
@@ -32,3 +34,7 @@ class Ship:
             self.rect.x += self.SPEED
         elif self.moving_left and self.rect.x > self.screen_rect.x:
             self.rect.x -= self.SPEED
+
+    def center_ship(self):
+        self.rect.midbottom = self.screen_rect.midbottom
+        self.x = float(self.rect.x)

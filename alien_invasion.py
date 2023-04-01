@@ -1,9 +1,11 @@
 import sys
+from time import sleep
 import pygame
 import os
 from ship import Ship
 from bullet import Bullet
 from alien import Alien
+from game_stats import GameStats
 
 
 class AlienInvasion:
@@ -24,6 +26,8 @@ class AlienInvasion:
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
+
+        self.stats = GameStats(self)
 
         self.create_fleet()
 
@@ -49,7 +53,7 @@ class AlienInvasion:
             alien.update()
         pygame.display.update()
         if pygame.sprite.spritecollideany(self.ship, self.aliens):
-            print('Ship Hit!!!')
+            self._ship_hit()
 
     # can move if else statements to separate class and using the strategy design pattern we can dynamically switch
     # between each movement
@@ -107,6 +111,17 @@ class AlienInvasion:
         for alien in self.aliens.sprites():
             alien.rect.y += alien.DROP_SPEED
             alien.fleet_direction *= -1
+
+    def _ship_hit(self):
+        self.stats.ships_left -= 1
+
+        self.aliens.empty()
+        self.bullets.empty()
+
+        self.create_fleet()
+        self.ship.center_ship()
+
+        sleep(0.5)
 
     def run_game(self):
         is_running = True
