@@ -39,12 +39,17 @@ class AlienInvasion:
                 bullet.update()
             else:
                 self.bullets.remove(bullet)
-
+        collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
+        if not self.aliens:
+            self.bullets.empty()
+            self.create_fleet()
         self.aliens.draw(self.screen)
+        for alien in self.aliens.sprites():
+            self._check_fleet_edges()
+            alien.update()
         pygame.display.update()
-
-
-
+        if pygame.sprite.spritecollideany(self.ship, self.aliens):
+            print('Ship Hit!!!')
 
     # can move if else statements to separate class and using the strategy design pattern we can dynamically switch
     # between each movement
@@ -65,29 +70,43 @@ class AlienInvasion:
                 elif event.key == pygame.K_LEFT:
                     self.ship.moving_left = False
 
-
     def _fire_bullet(self):
         if len(self.bullets) < self.ship.bullets_allowed:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
 
+    def _create_alien(self, alien_number, row_number):
+        alien = Alien(self)
+        alien_width, alien_height = alien.rect.size
+        alien.x = alien_width + 2 * alien_width * alien_number
+        alien.rect.x = alien.x
+        alien.rect.y = alien_height + 2 * alien.rect.height * row_number
+        self.aliens.add(alien)
+
     def create_fleet(self):
         alien = Alien(self)
-        alien_width = alien.rect.width
+        alien_width, alien_height = alien.rect.size
         available_space_x = self.WIDTH - (2 * alien_width - 30)
         number_aliens_x = available_space_x // (2 * alien_width)
 
-        for alien_number in range(number_aliens_x):
-            self._create_alien(alien_number)
+        ship_height = self.ship.rect.height
+        available_space_y = self.HEIGHT - (3 * alien_height) - ship_height
+        number_rows = available_space_y // (2 * alien_height)
 
-
-
-    def _create_alien(self, alien_number):
-        alien = Alien(self)
-        alien_width = alien.rect.width
-        alien.x = alien_width + 2 * alien_width * alien_number
-        alien.rect.x = alien.x
-        self.aliens.add(alien)
+        for row_number in range(number_rows):
+            for alien_number in range(number_aliens_x):
+                self._create_alien(alien_number, row_number)
+    
+    def _check_fleet_edges(self):
+        for alien in self.aliens.sprites():
+            if alien.check_edges():
+                self._change_fleet_direction()
+                break
+    
+    def _change_fleet_direction(self):
+        for alien in self.aliens.sprites():
+            alien.rect.y += alien.DROP_SPEED
+            alien.fleet_direction *= -1
 
     def run_game(self):
         is_running = True
