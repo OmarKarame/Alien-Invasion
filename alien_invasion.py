@@ -3,6 +3,7 @@ import pygame
 import os
 from ship import Ship
 from bullet import Bullet
+from alien import Alien
 
 
 class AlienInvasion:
@@ -22,9 +23,12 @@ class AlienInvasion:
 
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
+        self.aliens = pygame.sprite.Group()
+
+        self.create_fleet()
 
 
-    def draw_window(self):
+    def draw_window(self): 
         self.screen.fill(self.bg_color)
         self.blitme()
         self.ship.blitme()
@@ -35,7 +39,11 @@ class AlienInvasion:
                 bullet.update()
             else:
                 self.bullets.remove(bullet)
+
+        self.aliens.draw(self.screen)
         pygame.display.update()
+
+
 
 
     # can move if else statements to separate class and using the strategy design pattern we can dynamically switch
@@ -63,6 +71,9 @@ class AlienInvasion:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
 
+    def create_fleet(self):
+        alien = Alien(self)
+        self.aliens.add(alien)
 
     def run_game(self):
         is_running = True
